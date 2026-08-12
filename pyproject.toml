@@ -1,0 +1,10 @@
+[project]
+name = "cerberus"
+version = "0.1.0"
+description = "Бот учета участников Школы перед Школой и Школы Молодого Бауманца"
+authors = [
+    "Kirill Zhikharev"
+]
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = []
