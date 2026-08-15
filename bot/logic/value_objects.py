@@ -33,7 +33,7 @@ class Role(StrEnum):
     @property
     def emoji(self) -> str:
         return {
-            self.PARTICIPANT: "⭕",
+            self.PARTICIPANT: "",
             self.CURATOR: "🔴",
             self.SENIOR_CURATOR: "🟠",
             self.TS_TEAM: "⚫",

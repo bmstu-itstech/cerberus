@@ -1,11 +1,11 @@
 {{ p.role.emoji }} {{ p.display_name }}
 {{ p.group }}
-{% if p.birth_date %}{{ p.birth_date }} ({{ p.age }} лет){% endif %}
+{% if p.birth_date %}{{ p.birth_date.strftime("%d.%m.%Y") }} ({{ p.age }} лет){% endif %}
 
 📞 <b>Контакты</b>
 <pre>{{ p.phone }}</pre>
-<pre>@{{ p.telegram }}</pre>{% if p.vk %}
-{{ p.vk }}{% endif %}
+Telegram: <pre>@{{ p.telegram }}</pre>
+{% if p.vk %}VK: {{ p.vk }}{% endif %}
 
 🔄 <b>Статус</b>
 {{ p.status.display_name | capitalize }} {{ p.status.emoji }} {% if p.status == "left" %}({{p.left_at}}){% endif %}
