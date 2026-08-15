@@ -12,6 +12,7 @@ from bot.logic.usecases import GetGlobalReport, GetInfirmaryReport, \
 from .templates import render
 
 
+@dp.message_created(Command("r"))
 @dp.message_created(Command("report"))
 async def report(event: MessageCreated, container: punq.Container) -> None:
     rep = container.resolve(GetGlobalReport)()
@@ -28,6 +29,7 @@ async def report(event: MessageCreated, container: punq.Container) -> None:
     )
 
 
+@dp.message_created(Command("ri"))
 @dp.message_created(Command("infirmary"))
 async def infirmary(event: MessageCreated, container: punq.Container) -> None:
     rep = container.resolve(GetInfirmaryReport)()
@@ -41,6 +43,7 @@ async def infirmary(event: MessageCreated, container: punq.Container) -> None:
     )
 
 
+@dp.message_created(Command("rl"))
 @dp.message_created(Command("left"))
 async def left(event: MessageCreated, container: punq.Container) -> None:
     rep = container.resolve(GetLeftReport)()
@@ -54,6 +57,7 @@ async def left(event: MessageCreated, container: punq.Container) -> None:
     )
 
 
+@dp.message_created(Command("ru"))
 @dp.message_created(Command("uspen"))
 async def uspen(event: MessageCreated, container: punq.Container) -> None:
     rep = container.resolve(GetUspenReport)()
