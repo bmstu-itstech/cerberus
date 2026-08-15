@@ -1,3 +1,5 @@
+from typing import List
+
 from sqlalchemy import (
     Column,
     Integer,
@@ -5,9 +7,26 @@ from sqlalchemy import (
     Date,
     ForeignKey,
     DateTime,
-    PrimaryKeyConstraint,
+    Table,
+    Boolean,
 )
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, DeclarativeBase, Mapped
+
+
+class Base(DeclarativeBase):
+    pass
+
+
+def create_tables(engine):
+    Base.metadata.create_all(engine)
+
+
+participants_subordination = Table(
+    "participants_subordination",
+    Base.metadata,
+    Column("supervisor_id", ForeignKey("participants.id"), primary_key=True),
+    Column("subordinator_id", ForeignKey("participants.id"), primary_key=True),
+)
 
 
 class Participant(Base):
@@ -19,6 +38,7 @@ class Participant(Base):
     birth_date = Column(Date, nullable=True)
     phone = Column(String, nullable=False)
     telegram = Column(String, nullable=False)
+    vk = Column(String, nullable=True)
     status = Column(String, nullable=False)
     role = Column(String, nullable=False)
     team = Column(Integer, nullable=True)
@@ -26,45 +46,18 @@ class Participant(Base):
     health_conditions = Column(String, nullable=True)
     dietary_restrictions = Column(String, nullable=True)
     left_at = Column(DateTime, nullable=True)
+    star = Column(Boolean, nullable=False, default=False)
 
-    supervisors = relationship(
-        "ParticipantRelationship",
-        foreign_keys="ParticipantRelationship.subordinator_id",
-        back_populates="supervisor",
-    )
-
-    subordinates = relationship(
-        "ParticipantRelationship",
-        foreign_keys="ParticipantRelationship.supervisor_id",
-        back_populates="subordinator",
-    )
-
-
-class ParticipantRelationship(Base):
-    __tablename__ = "participants_relationships"
-
-    supervisor_id: Column = Column(
-        Integer,
-        ForeignKey("participants.id"),
-        nullable=False,
-    )
-
-    subordinator_id: Column = Column(
-        Integer,
-        ForeignKey("participants.id"),
-        nullable=False,
-    )
-
-    supervisor = relationship(
-        "Participant",
-        foreign_keys=[supervisor_id],
+    supervisors: Mapped[List["Participant"]] = relationship(
+        secondary=participants_subordination,
+        primaryjoin="Participant.id == participants_subordination.c.subordinator_id",
+        secondaryjoin="Participant.id == participants_subordination.c.supervisor_id",
         back_populates="subordinates",
     )
 
-    subordinator = relationship(
-        "Participant",
-        foreign_keys=[subordinator_id],
+    subordinates: Mapped[List["Participant"]] = relationship(
+        secondary=participants_subordination,
+        primaryjoin="Participant.id == participants_subordination.c.supervisor_id",
+        secondaryjoin="Participant.id == participants_subordination.c.subordinator_id",
         back_populates="supervisors",
     )
-
-    __table_args__ = (PrimaryKeyConstraint(supervisor_id, subordinator_id),)

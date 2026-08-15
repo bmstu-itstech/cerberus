@@ -1,11 +1,11 @@
-from jinja2 import Environment, FileSystemLoader, select_autoescape
+from jinja2 import Environment, FileSystemLoader
 
 
 env = Environment(
-    loader=FileSystemLoader("bot/templates"),
-    autoescape=select_autoescape(["html", "xml"])
+    loader=FileSystemLoader("templates"),
 )
 
-def render_template(template_name: str, **kwargs) -> str:
+
+def render(template_name: str, **kwargs) -> str:
     template = env.get_template(template_name)
     return template.render(**kwargs)

@@ -1,10 +1,24 @@
 [project]
 name = "cerberus"
-version = "0.1.0"
+version = "1.0.0"
 description = "Бот учета участников Школы перед Школой и Школы Молодого Бауманца"
 authors = [
     "Kirill Zhikharev"
 ]
 readme = "README.md"
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+    "attrs>=26.1.0",
+    "jinja2>=3.1.6",
+    "maxapi>=1.2.1",
+    "psycopg2>=2.9.12",
+    "punq>=0.8.0",
+    "pydantic>=2.13.4",
+    "pydantic-settings>=2.15.0",
+    "sqlalchemy>=2.0.52",
+]
+
+[dependency-groups]
+dev = [
+    "mypy>=2.3.1",
+]

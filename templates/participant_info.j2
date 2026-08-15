@@ -1,0 +1,19 @@
+{{ p.role.emoji }} {{ p.display_name }}
+{{ p.group }}
+{% if p.birth_date %}{{ p.birth_date }} ({{ p.age }} лет){% endif %}
+
+📞 <b>Контакты</b>
+<pre>{{ p.phone }}</pre>
+<pre>@{{ p.telegram }}</pre>{% if p.vk %}
+{{ p.vk }}{% endif %}
+
+🔄 <b>Статус</b>
+{{ p.status.display_name | capitalize }} {{ p.status.emoji }} {% if p.status == "left" %}({{p.left_at}}){% endif %}
+{% if p.team %}<b>{{ p.team }}</b> команда, <b>{{ p.district }}</b> округ{% endif %}
+
+{% if p.supervisors %}<b>Ответственные:</b>
+{% for sup in p.supervisors %}<code>{{ "%4d" | format(sup.id) }}</code> {{ sup.full_name }}
+{% endfor %}{% endif %}{% if p.subordinates %}<b>Команда:</b>
+{% for  sub in p.subordinates %}<code>{{ "%4d" | format(sub.id) }}</code> {{ sub.full_name }}
+{% endfor %}{% endif %}
+Особенности: {% if p.health_conditions %}🇨🇭{% else %}-{% endif %}/{% if p.dietary_restrictions %}🥗{% else %}-{% endif %}

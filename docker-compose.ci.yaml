@@ -6,5 +6,5 @@ services:
       target: production
     environment:
       POSTGRES_DSN: ${POSTGRES_DSN}
-      MAX_API_TOKEN: ${TOKEN}
+      MAX_BOT_TOKEN: ${MAX_BOT_TOKEN}
     restart: unless-stopped
