@@ -1,0 +1,9 @@
+{{ team }} команда, {{ district }} округ
+Общее число: {{ participants | length }}
+
+Кураторы:
+{% for curator in curators %}<pre>{{ "%4d" | format(curator.id) }}</pre> {{ curator.full_name }}
+{% endfor %}
+Участники:
+{% for prt in participants %}<pre>{{ "%4d" | format(prt.id) }}</pre> {{ prt.display_name }}
+{% endfor %}
