@@ -1,0 +1,13 @@
+<b>ОТЧЁТ ПО ЛАГЕРЮ на {{ now.strftime("%H:%M %d.%m.%Y") }}</b>
+
+Всего: <b>{{ total }}</b>
+
+<b>В лагере</b>
+{% for district, cnt in camp.items() %}{{ "%2d" | format(district) }} — {{ cnt }}
+{% endfor %}
+<b>В лазарете</b>
+{% for district, cnt in infirmary.items() %}{{ "%2d" | format(district) }} — {{ cnt }}
+{% endfor %}
+<b>Уехали</b>
+{% for district, cnt in infirmary.items() %}{{ "%2d" | format(district) }} — {{ cnt }}
+{% endfor %}

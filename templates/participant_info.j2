@@ -1,4 +1,4 @@
-{{ p.role.emoji }} {{ p.display_name }}
+{{ p.role.emoji }} {{ p.display_name }} {% if p.role != 'participant' %}({{ p.role.display_name | capitalize }}){% endif %}
 {{ p.group }}
 {% if p.birth_date %}{{ p.birth_date.strftime("%d.%m.%Y") }} ({{ p.age }} лет){% endif %}
 

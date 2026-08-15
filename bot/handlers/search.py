@@ -1,4 +1,5 @@
 import punq
+
 from maxapi.enums import TextFormat
 from maxapi.filters.command import Command
 from maxapi.types import MessageCreated

@@ -23,5 +23,6 @@ async def start_polling() -> None:
     from bot.handlers.search import search
     from bot.handlers.get import get
     from bot.handlers.team import team
+    from bot.handlers.reports import report, infirmary, left, uspen
 
     await dp.start_polling(bot)

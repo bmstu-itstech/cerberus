@@ -1,15 +1,27 @@
-import attrs
-from typing import final, cast
+from dataclasses import dataclass
 
-from sqlalchemy import select, or_, and_
+import attrs
+from typing import final
+
+from sqlalchemy import select, or_, func, case
 from sqlalchemy.orm import sessionmaker, selectinload
 
 from bot.infra.models import Participant
+
+PARTICIPANTS_LIMIT = 30
 
 
 class ParticipantNotFoundException(Exception):
     def __init__(self, participant_id: int):
         super().__init__(f"Participant with id {participant_id} not found")
+
+
+@dataclass
+class GlobalReportDTO:
+    total: int
+    camp: dict[int, int]
+    infirmary: dict[int, int]
+    left: dict[int, int]
 
 
 @final
@@ -27,6 +39,7 @@ class ParticipantRepo:
                 )
             )
             .order_by(Participant.full_name)
+            .limit(PARTICIPANTS_LIMIT)
         )
         with self._session_factory() as session:
             return list(session.execute(stmt).scalars().all())
@@ -50,6 +63,74 @@ class ParticipantRepo:
         stmt = (
             select(Participant)
             .where(Participant.team == team)
+            .order_by(Participant.full_name)
+        )
+        with self._session_factory() as session:
+            return list(session.execute(stmt).scalars().all())
+
+    def global_report(self) -> GlobalReportDTO:
+        with self._session_factory() as session:
+            total = session.query(func.count(Participant.id)).scalar()
+
+            stats = (
+                session.query(
+                    Participant.district,
+                    func.sum(
+                        case(
+                            (Participant.status == "camp", 1), else_=0))
+                            .label('camp_count'),
+                    func.sum(
+                        case(
+                            (Participant.status == "infirmary", 1), else_=0))
+                            .label('infirmary_count'),
+                    func.sum(
+                        case(
+                            (Participant.status == "left", 1), else_=0))
+                            .label('left_count')
+                )
+                .filter(Participant.district.isnot(None))
+                .group_by(Participant.district)
+                .all()
+            )
+
+            camp_dict = {}
+            infirmary_dict = {}
+            left_dict = {}
+
+            for district, camp_count, infirmary_count, left_count in stats:
+                camp_dict[district] = camp_count
+                infirmary_dict[district] = infirmary_count
+                left_dict[district] = left_count
+
+        return GlobalReportDTO(
+            total=total,
+            camp=camp_dict,
+            infirmary=infirmary_dict,
+            left=left_dict
+        )
+
+    def infirmary_participants(self) -> list[Participant]:
+        stmt = (
+            select(Participant)
+            .where(Participant.status == "infirmary")
+            .order_by(Participant.full_name)
+        )
+        with self._session_factory() as session:
+            return list(session.execute(stmt).scalars().all())
+
+    def left_participants(self) -> list[Participant]:
+        stmt = (
+            select(Participant)
+            .where(Participant.status == "left")
+            .order_by(Participant.full_name)
+        )
+        with self._session_factory() as session:
+            return list(session.execute(stmt).scalars().all())
+
+    def uspen_participants(self) -> list[Participant]:
+        stmt = (
+            select(Participant)
+            .where(Participant.star)
             .order_by(Participant.full_name)
         )
         with self._session_factory() as session:

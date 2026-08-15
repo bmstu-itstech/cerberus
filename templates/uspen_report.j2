@@ -1,0 +1,5 @@
+<b>ОТЧЁТ УСПЕНСКОГО на {{ now.strftime("%H:%M %d.%m.%Y") }}</b>
+
+{% for participant in participants %}<pre>{{ "%4d" | format(participant.id) }}</pre> {{ participant.role.emoji }} {{ participant.full_name }} {{ participant.status.emoji }}
+{% else %}❌ <b>Успенскому не за кем смотреть :(</b>
+{% endfor %}

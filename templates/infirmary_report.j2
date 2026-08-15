@@ -1,0 +1,5 @@
+<b>ОТЧЁТ ПО ЛАЗАРЕТУ на {{ now.strftime("%H:%M %d.%m.%Y") }}</b>
+
+{% for participant in participants %}<pre>{{ "%4d" | format(participant.id) }}</pre> {{ participant.role.emoji }} {{ participant.display_name }}
+{% else %}❌ <b>Сейчас в лазарете никого нет</b>
+{% endfor %}

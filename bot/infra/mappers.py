@@ -7,10 +7,11 @@ from bot.logic.value_objects import (
     ParticipantDetailed,
     ParticipantLink,
     Status,
-    Role,
+    Role, GlobalReport,
 )
 
 from .models import Participant
+from .repository import GlobalReportDTO
 
 
 @final
@@ -51,4 +52,15 @@ class ParticipantDetailedMapper:
             star=bool(participant.star),
             supervisors=[link_mapper(p) for p in participant.supervisors],
             subordinates=[link_mapper(p) for p in participant.subordinates],
+        )
+
+@final
+@attrs.define(slots=True, frozen=True)
+class GlobalReportMapper:
+    def __call__(self, report: GlobalReportDTO) -> GlobalReport:
+        return GlobalReport(
+            total=report.total,
+            camp=report.camp,
+            infirmary=report.infirmary,
+            left=report.left,
         )

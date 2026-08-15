@@ -134,3 +134,26 @@ class TeamInfo:
     district: int
     curators: list[ParticipantLink]
     participants: list[ParticipantLink]
+
+
+@dataclass
+class GlobalReport:
+    total: int
+    camp: dict[int, int]
+    infirmary: dict[int, int]
+    left: dict[int, int]
+
+
+@dataclass
+class InfirmaryReport:
+    participants: list[ParticipantLink]
+
+
+@dataclass
+class LeftReport:
+    participants: list[ParticipantLink]
+
+
+@dataclass
+class UspenReport:
+    participants: list[ParticipantLink]

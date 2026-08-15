@@ -45,10 +45,15 @@ def _populate_app(container: punq.Container) -> punq.Container:
 
     container.register(mappers.ParticipantLinkMapper)
     container.register(mappers.ParticipantDetailedMapper)
+    container.register(mappers.GlobalReportMapper)
 
     container.register(usecases.SearchParticipants)
     container.register(usecases.GetParticipant)
+    container.register(usecases.GetGlobalReport)
+    container.register(usecases.GetInfirmaryReport)
+    container.register(usecases.GetLeftReport)
     container.register(usecases.GetTeam)
+    container.register(usecases.GetUspenReport)
 
     return container
 
