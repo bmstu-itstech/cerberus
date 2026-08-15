@@ -5,44 +5,53 @@ from datetime import date, datetime
 
 class Role(StrEnum):
     PARTICIPANT = "participant"
-    CURATOR = "curator"
-    SENIOR_CURATOR = "senior_curator"
     TS_TEAM = "ts_team"
-    STAGE_TEAM = "sc_team"
-    HQ_TEAM = "hq_team"
     MEDIA_TEAM = "media_team"
-    SECURITY_TEAM = "security_team"
+    HQ_TEAM = "hq_team"
     EP_TEAM = "ep_team"
     SENIOR_TEAM = "senior_team"
+    CURATOR = "curator"
+    PRESENTER = "presenter"
+    HEAD_OF_TEAM = "head_of_team"
+    STAGE_TEAM = "sc_team"
+    SECURITY_TEAM = "security_team"
+    MEDICINE_TEAM = "medicine_team"
+    SENIOR_CURATOR = "senior_curator"
 
     @property
     def display_name(self) -> str:
         return {
-            self.PARTICIPANT: "участники",
-            self.CURATOR: "кураторы",
-            self.SENIOR_CURATOR: "старшие кураторы",
+            self.PARTICIPANT: "участник",
             self.TS_TEAM: "техническая поддержка",
-            self.STAGE_TEAM: "команда сцены",
-            self.HQ_TEAM: "штаб",
             self.MEDIA_TEAM: "медиа",
-            self.SECURITY_TEAM: "служба безопасности",
+            self.HQ_TEAM: "штаб",
             self.EP_TEAM: "образовательные площадки",
             self.SENIOR_TEAM: "старший оргкомитет",
+            self.CURATOR: "куратор",
+            self.PRESENTER: "ведущий",
+            self.HEAD_OF_TEAM: "руководитель проекта",
+            self.STAGE_TEAM: "команда сцены",
+            self.SECURITY_TEAM: "служба безопасности",
+            self.MEDICINE_TEAM: "медицина",
+            self.SENIOR_CURATOR: "старшие кураторы",
         }[self]
 
     @property
     def emoji(self) -> str:
         return {
             self.PARTICIPANT: "",
-            self.CURATOR: "🔴",
-            self.SENIOR_CURATOR: "🟠",
             self.TS_TEAM: "⚫",
-            self.STAGE_TEAM: "⚪",
-            self.HQ_TEAM: "🟡",
             self.MEDIA_TEAM: "🟢",
-            self.SECURITY_TEAM: "🟤",
+            self.HQ_TEAM: "🟡",
             self.EP_TEAM: "🔵",
-            self.SENIOR_TEAM: "🟣",
+            self.SENIOR_TEAM: "⚪️",
+            self.CURATOR: "🔴",
+            self.PRESENTER: "💜",
+            self.HEAD_OF_TEAM: "🤍",
+            self.STAGE_TEAM: "🟣",
+            self.SECURITY_TEAM: "🟤",
+            self.MEDICINE_TEAM: "🩵",
+            self.SENIOR_CURATOR: "🟠",
         }[self]
 
 

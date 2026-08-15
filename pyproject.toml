@@ -1,6 +1,6 @@
 [project]
 name = "cerberus"
-version = "1.0.0"
+version = "1.2.0"
 description = "Бот учета участников Школы перед Школой и Школы Молодого Бауманца"
 authors = [
     "Kirill Zhikharev"
