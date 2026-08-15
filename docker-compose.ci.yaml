@@ -1,0 +1,10 @@
+services:
+  bot:
+    container_name: cerberus-bot
+    build:
+      context: .
+      target: production
+    environment:
+      POSTGRES_DSN: ${POSTGRES_DSN}
+      MAX_API_TOKEN: ${TOKEN}
+    restart: unless-stopped
