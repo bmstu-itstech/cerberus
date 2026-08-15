@@ -148,9 +148,11 @@ class TeamInfo:
 @dataclass
 class GlobalReport:
     total: int
-    camp: dict[int, int]
-    infirmary: dict[int, int]
-    left: dict[int, int]
+    # Словарь округ -> количество человек в округе с данным статусом
+    # None соответствует организаторам без округа
+    camp: dict[int | None, int]
+    infirmary: dict[int | None, int]
+    left: dict[int | None, int]
 
 
 @dataclass

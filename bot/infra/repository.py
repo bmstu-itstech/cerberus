@@ -19,9 +19,9 @@ class ParticipantNotFoundException(Exception):
 @dataclass
 class GlobalReportDTO:
     total: int
-    camp: dict[int, int]
-    infirmary: dict[int, int]
-    left: dict[int, int]
+    camp: dict[int | None, int]
+    infirmary: dict[int | None, int]
+    left: dict[int | None, int]
 
 
 @final
@@ -88,7 +88,6 @@ class ParticipantRepo:
                             (Participant.status == "left", 1), else_=0))
                             .label('left_count')
                 )
-                .filter(Participant.district.isnot(None))
                 .group_by(Participant.district)
                 .all()
             )

@@ -3,11 +3,11 @@
 Всего: <b>{{ total }}</b>
 
 <b>В лагере</b>
-{% for district, cnt in camp.items() %}{{ "%2d" | format(district) }} — {{ cnt }}
+{% for district, cnt in camp.items() %}<pre>{% if district %}{{ "%3d" | format(district) }}{% else %}Орг{% endif %}</pre> — {{ cnt }}
 {% endfor %}
 <b>В лазарете</b>
-{% for district, cnt in infirmary.items() %}{{ "%2d" | format(district) }} — {{ cnt }}
+{% for district, cnt in infirmary.items() %}<pre>{% if district %}{{ "%3d" | format(district) }}{% else %}Орг{% endif %}</pre> — {{ cnt }}
 {% endfor %}
 <b>Уехали</b>
-{% for district, cnt in infirmary.items() %}{{ "%2d" | format(district) }} — {{ cnt }}
+{% for district, cnt in left.items() %}<pre>{% if district %}{{ "%3d" | format(district) }}{% else %}Орг{% endif %}</pre> — {{ cnt }}
 {% endfor %}
