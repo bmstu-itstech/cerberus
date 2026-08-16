@@ -34,6 +34,7 @@ class ParticipantAdmin(ModelView, model=Participant):
         Participant.district,
         Participant.health_conditions,
         Participant.dietary_restrictions,
+        Participant.contacts,
         Participant.star,
         Participant.supervisors,
         Participant.subordinates,
