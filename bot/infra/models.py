@@ -11,6 +11,7 @@ from sqlalchemy import (
     Boolean,
 )
 from sqlalchemy.orm import relationship, DeclarativeBase, Mapped
+from passlib.context import CryptContext
 
 
 class Base(DeclarativeBase):
@@ -61,3 +62,24 @@ class Participant(Base):
         secondaryjoin="Participant.id == participants_subordination.c.subordinator_id",
         back_populates="supervisors",
     )
+
+    def __repr__(self):
+        return f"<User {self.id}>"
+
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    username = Column(String, nullable=False, unique=True)
+    password_hash = Column(String(255), nullable=False)
+
+    def verify_password(self, password: str) -> bool:
+        r = pwd_context.verify(password, self.password_hash)
+        return r
+
+    def __repr__(self):
+        return f"<User {self.username}>"

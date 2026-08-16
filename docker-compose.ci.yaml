@@ -19,6 +19,7 @@ services:
       target: production
     environment:
       POSTGRES_DSN: ${POSTGRES_DSN}
+      SECRET: ${SECRET}
     restart: unless-stopped
     volumes:
       - /etc/timezone:/etc/timezone:ro

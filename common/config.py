@@ -11,10 +11,12 @@ from pydantic_settings import BaseSettings
 class Config(BaseSettings):
     token: str
     pg_dsn: PostgresDsn
+    secret: str
 
     @classmethod
     def from_env(cls) -> Self:
         return cls(
             token=getenv("MAX_BOT_TOKEN", ""),
             pg_dsn=PostgresDsn(getenv("POSTGRES_DSN", "")),
+            secret=getenv("SECRET", ""),
         )
