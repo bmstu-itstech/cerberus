@@ -23,6 +23,6 @@ services:
     volumes:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
-    command: [ "-m", "uvicorn", "admin:app", "--port", "8000", "--host", "0.0.0.0" "--proxy-headers" "--forwarded-allow-ips='*'" ]
+    command: [ "-m", "uvicorn", "admin:app", "--port", "8000", "--host", "0.0.0.0", "--proxy-headers", "--forwarded-allow-ips='*'" ]
     ports:
       - "${ADMIN_PORT:-8000}:8000"
