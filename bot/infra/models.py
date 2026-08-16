@@ -64,7 +64,7 @@ class Participant(Base):
     )
 
     def __repr__(self):
-        return f"<User {self.id}>"
+        return f"<Participant {self.full_name}>"
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -78,8 +78,7 @@ class User(Base):
     password_hash = Column(String(255), nullable=False)
 
     def verify_password(self, password: str) -> bool:
-        r = pwd_context.verify(password, self.password_hash)
-        return r
+        return pwd_context.verify(password, self.password_hash)
 
     def __repr__(self):
         return f"<User {self.username}>"
