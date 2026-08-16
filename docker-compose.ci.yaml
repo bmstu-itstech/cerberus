@@ -11,3 +11,18 @@ services:
     volumes:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
+
+  admin:
+    container_name: cerberus-admin
+    build:
+      context: .
+      target: production
+    environment:
+      POSTGRES_DSN: ${POSTGRES_DSN}
+    restart: unless-stopped
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    command: [ "-m", "uvicorn", "admin:app", "--port", "${ADMIN_PORT:-8000}", "--host", "0.0.0.0" ]
+    ports:
+      - "${ADMIN_PORT:-8000}:8000"

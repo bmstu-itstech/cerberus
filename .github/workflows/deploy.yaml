@@ -18,13 +18,14 @@ jobs:
         env:
           POSTGRES_DSN: ${{ secrets.POSTGRES_DSN }}
           MAX_API_TOKEN: ${{ secrets.MAX_BOT_TOKEN }}
+          ADMIN_PORT: ${{ vars.ADMIN_PORT }}
         with:
           host: ${{ vars.SSH_HOST }}
           port: ${{ vars.SSH_PORT }}
           username: ${{ vars.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script_stop: true
-          envs: POSTGRES_DSN,MAX_BOT_TOKEN
+          envs: ADMIN_PORT,POSTGRES_DSN,MAX_BOT_TOKEN
           script: |
             cd ${{ vars.PROJECT_DIR }}
             git stash

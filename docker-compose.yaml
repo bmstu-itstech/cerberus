@@ -16,6 +16,26 @@ services:
     volumes:
       - .:/code
 
+  admin:
+    container_name: cerberus-admin
+    build:
+      context: .
+      target: development
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DSN: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}"
+    networks:
+      - internal
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - .:/code
+    command: [ "-m", "uvicorn", "admin:app", "--port", "8000", "--host", "0.0.0.0" ]
+    ports:
+      - "${ADMIN_PORT:-8000}:8000"
+
   db:
     image: postgres:18.3
     container_name: cerberus-db
