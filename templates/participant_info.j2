@@ -17,3 +17,6 @@ Telegram: <pre>@{{ p.telegram }}</pre>
 {% for  sub in p.subordinates %}<code>{{ "%4d" | format(sub.id) }}</code> {{ sub.full_name }}
 {% endfor %}{% endif %}
 Особенности: {% if p.health_conditions %}🇨🇭{% else %}-{% endif %}/{% if p.dietary_restrictions %}🥗{% else %}-{% endif %}
+
+{% if p.contacts %}<b>Контакты</b>
+{{ p.contacts }}{% endif %}

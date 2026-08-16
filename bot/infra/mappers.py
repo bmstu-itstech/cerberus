@@ -50,6 +50,7 @@ class ParticipantDetailedMapper:
             health_conditions=cast(str | None, participant.health_conditions),
             dietary_restrictions=cast(str | None, participant.dietary_restrictions),
             star=bool(participant.star),
+            contacts=cast(str | None, participant.contacts),
             supervisors=[link_mapper(p) for p in participant.supervisors],
             subordinates=[link_mapper(p) for p in participant.subordinates],
         )

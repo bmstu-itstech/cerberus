@@ -48,6 +48,7 @@ class Participant(Base):
     dietary_restrictions = Column(String, nullable=True)
     left_at = Column(DateTime, nullable=True)
     star = Column(Boolean, nullable=False, default=False)
+    contacts = Column(String, nullable=True)
 
     supervisors: Mapped[List["Participant"]] = relationship(
         secondary=participants_subordination,

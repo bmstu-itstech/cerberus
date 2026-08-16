@@ -112,6 +112,7 @@ class ParticipantDetailed:
     health_conditions: str | None
     dietary_restrictions: str | None
     star: bool
+    contacts: str | None
     supervisors: list[ParticipantLink]
     subordinates: list[ParticipantLink]
 
