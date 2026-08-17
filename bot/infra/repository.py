@@ -7,6 +7,7 @@ from sqlalchemy import select, or_, func, case
 from sqlalchemy.orm import sessionmaker, selectinload
 
 from bot.infra.models import Participant
+from bot.logic.value_objects import Role
 
 PARTICIPANTS_LIMIT = 30
 
@@ -72,7 +73,7 @@ class ParticipantRepo:
         with self._session_factory() as session:
             total = session.query(func.count(Participant.id)).scalar()
 
-            stats = (
+            prt_stats = (
                 session.query(
                     Participant.district,
                     func.sum(
@@ -88,18 +89,42 @@ class ParticipantRepo:
                             (Participant.status == "left", 1), else_=0))
                             .label('left_count')
                 )
+                .where(Participant.role == Role.PARTICIPANT)
                 .group_by(Participant.district)
                 .all()
+            )
+
+            org_stats = (
+                session.query(
+                    func.sum(
+                        case(
+                            (Participant.status == "camp", 1), else_=0))
+                    .label('camp_count'),
+                    func.sum(
+                        case(
+                            (Participant.status == "infirmary", 1), else_=0))
+                    .label('infirmary_count'),
+                    func.sum(
+                        case(
+                            (Participant.status == "left", 1), else_=0))
+                    .label('left_count')
+                )
+                .where(Participant.role != Role.PARTICIPANT)
+                .one()
             )
 
             camp_dict = {}
             infirmary_dict = {}
             left_dict = {}
 
-            for district, camp_count, infirmary_count, left_count in stats:
+            for district, camp_count, infirmary_count, left_count in prt_stats:
                 camp_dict[district] = camp_count
                 infirmary_dict[district] = infirmary_count
                 left_dict[district] = left_count
+
+            camp_dict[None] = org_stats[0]
+            infirmary_dict[None] = org_stats[1]
+            left_dict[None] = org_stats[2]
 
         return GlobalReportDTO(
             total=total,
