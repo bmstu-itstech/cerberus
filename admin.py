@@ -39,6 +39,24 @@ class ParticipantAdmin(ModelView, model=Participant):
         Participant.supervisors,
         Participant.subordinates,
     ]
+    column_labels = {
+        Participant.id: "ID",
+        Participant.full_name: "Полное имя",
+        Participant.group: "Группа",
+        Participant.birth_date: "Дата рождения",
+        Participant.phone: "Телефон",
+        Participant.telegram: "Телеграм",
+        Participant.vk: "ВК",
+        Participant.status: "Статус",
+        Participant.role: "Роль",
+        Participant.team: "Команда",
+        Participant.district: "Округ",
+        Participant.health_conditions: "Особенности здоровья",
+        Participant.dietary_restrictions: "Особенности питания",
+        Participant.contacts: "Контакты",
+        Participant.supervisors: "Руководители",
+        Participant.subordinates: "Подчинённые",
+    }
     column_searchable_list = [
         Participant.id,
         Participant.full_name,
