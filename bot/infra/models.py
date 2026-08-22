@@ -9,8 +9,9 @@ from sqlalchemy import (
     DateTime,
     Table,
     Boolean,
+    asc,
 )
-from sqlalchemy.orm import relationship, DeclarativeBase, Mapped
+from sqlalchemy.orm import relationship, DeclarativeBase, Mapped, backref
 from passlib.context import CryptContext
 
 
@@ -27,6 +28,13 @@ participants_subordination = Table(
     Base.metadata,
     Column("supervisor_id", ForeignKey("participants.id"), primary_key=True),
     Column("subordinator_id", ForeignKey("participants.id"), primary_key=True),
+)
+
+participants_partnership = Table(
+    "participants_partnership",
+    Base.metadata,
+    Column("lid", Integer, ForeignKey("participants.id"), primary_key=True),
+    Column("rid", ForeignKey("participants.id"), primary_key=True),
 )
 
 
@@ -50,6 +58,13 @@ class Participant(Base):
     star = Column(Boolean, nullable=False, default=False)
     contacts = Column(String, nullable=True)
 
+    partners: Mapped[List["Participant"]] = relationship(
+        "Participant",
+        secondary=participants_partnership,
+        primaryjoin="Participant.id == participants_partnership.c.lid",
+        secondaryjoin="Participant.id == participants_partnership.c.rid",
+    )
+
     supervisors: Mapped[List["Participant"]] = relationship(
         secondary=participants_subordination,
         primaryjoin="Participant.id == participants_subordination.c.subordinator_id",
@@ -62,6 +77,7 @@ class Participant(Base):
         primaryjoin="Participant.id == participants_subordination.c.supervisor_id",
         secondaryjoin="Participant.id == participants_subordination.c.subordinator_id",
         back_populates="supervisors",
+        order_by="Participant.district, Participant.team, Participant.full_name",
     )
 
     def __repr__(self):

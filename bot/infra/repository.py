@@ -50,6 +50,7 @@ class ParticipantRepo:
             select(Participant)
             .where(Participant.id == participant_id)
             .options(
+                selectinload(Participant.partners),
                 selectinload(Participant.supervisors),
                 selectinload(Participant.subordinates),
             )
@@ -76,18 +77,15 @@ class ParticipantRepo:
             prt_stats = (
                 session.query(
                     Participant.district,
+                    func.sum(case((Participant.status == "camp", 1), else_=0)).label(
+                        "camp_count"
+                    ),
                     func.sum(
-                        case(
-                            (Participant.status == "camp", 1), else_=0))
-                            .label('camp_count'),
-                    func.sum(
-                        case(
-                            (Participant.status == "infirmary", 1), else_=0))
-                            .label('infirmary_count'),
-                    func.sum(
-                        case(
-                            (Participant.status == "left", 1), else_=0))
-                            .label('left_count')
+                        case((Participant.status == "infirmary", 1), else_=0)
+                    ).label("infirmary_count"),
+                    func.sum(case((Participant.status == "left", 1), else_=0)).label(
+                        "left_count"
+                    ),
                 )
                 .where(Participant.role == Role.PARTICIPANT)
                 .group_by(Participant.district)
@@ -96,18 +94,15 @@ class ParticipantRepo:
 
             org_stats = (
                 session.query(
+                    func.sum(case((Participant.status == "camp", 1), else_=0)).label(
+                        "camp_count"
+                    ),
                     func.sum(
-                        case(
-                            (Participant.status == "camp", 1), else_=0))
-                    .label('camp_count'),
-                    func.sum(
-                        case(
-                            (Participant.status == "infirmary", 1), else_=0))
-                    .label('infirmary_count'),
-                    func.sum(
-                        case(
-                            (Participant.status == "left", 1), else_=0))
-                    .label('left_count')
+                        case((Participant.status == "infirmary", 1), else_=0)
+                    ).label("infirmary_count"),
+                    func.sum(case((Participant.status == "left", 1), else_=0)).label(
+                        "left_count"
+                    ),
                 )
                 .where(Participant.role != Role.PARTICIPANT)
                 .one()
@@ -127,10 +122,7 @@ class ParticipantRepo:
             left_dict[None] = org_stats[2]
 
         return GlobalReportDTO(
-            total=total,
-            camp=camp_dict,
-            infirmary=infirmary_dict,
-            left=left_dict
+            total=total, camp=camp_dict, infirmary=infirmary_dict, left=left_dict
         )
 
     def infirmary_participants(self) -> list[Participant]:
@@ -153,9 +145,7 @@ class ParticipantRepo:
 
     def uspen_participants(self) -> list[Participant]:
         stmt = (
-            select(Participant)
-            .where(Participant.star)
-            .order_by(Participant.full_name)
+            select(Participant).where(Participant.star).order_by(Participant.full_name)
         )
         with self._session_factory() as session:
             return list(session.execute(stmt).scalars().all())

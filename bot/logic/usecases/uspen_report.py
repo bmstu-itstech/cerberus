@@ -14,5 +14,7 @@ class GetUspenReport:
 
     def __call__(self) -> UspenReport:
         return UspenReport(
-            participants=[self._mapper(p) for p in self._repository.uspen_participants()]
+            participants=[
+                self._mapper(p) for p in self._repository.uspen_participants()
+            ]
         )

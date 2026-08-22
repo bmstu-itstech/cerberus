@@ -19,6 +19,7 @@ engine = create_engine(str(config.pg_dsn))
 
 class ParticipantAdmin(ModelView, model=Participant):
     page_size = 100
+    page_size_options = [10, 30, 50, 100, 200, 500, 1000, 1500, 2000, 2500]
 
     column_list = [
         Participant.id,
@@ -36,6 +37,7 @@ class ParticipantAdmin(ModelView, model=Participant):
         Participant.dietary_restrictions,
         Participant.contacts,
         Participant.star,
+        Participant.partners,
         Participant.supervisors,
         Participant.subordinates,
     ]
@@ -54,12 +56,30 @@ class ParticipantAdmin(ModelView, model=Participant):
         Participant.health_conditions: "Особенности здоровья",
         Participant.dietary_restrictions: "Особенности питания",
         Participant.contacts: "Контакты",
+        Participant.partners: "Напарники",
         Participant.supervisors: "Руководители",
         Participant.subordinates: "Подчинённые",
     }
     column_searchable_list = [
         Participant.id,
         Participant.full_name,
+        Participant.telegram,
+    ]
+    column_sortable_list = [
+        Participant.id,
+        Participant.full_name,
+        Participant.group,
+        Participant.birth_date,
+        Participant.phone,
+        Participant.telegram,
+        Participant.vk,
+        Participant.status,
+        Participant.role,
+        Participant.team,
+        Participant.district,
+        Participant.health_conditions,
+        Participant.dietary_restrictions,
+        Participant.contacts,
     ]
     column_filters = [
         AllUniqueStringValuesFilter(Participant.role),
@@ -67,8 +87,11 @@ class ParticipantAdmin(ModelView, model=Participant):
         BooleanFilter(Participant.star),
     ]
     column_formatters = {
+        Participant.partners: lambda obj, _: [p.full_name for p in obj.partners],
         Participant.supervisors: lambda obj, _: [s.full_name for s in obj.supervisors],
-        Participant.subordinates: lambda obj, _: [s.full_name for s in obj.subordinates],
+        Participant.subordinates: lambda obj, _: [
+            s.full_name for s in obj.subordinates
+        ],
     }
 
 
@@ -90,10 +113,12 @@ class AuthBackend(AuthenticationBackend):
                 user = db_session.query(User).filter(User.username == username).first()
 
                 if user and user.verify_password(password):
-                    request.session.update({
-                        "user_id": user.id,
-                        "username": user.username,
-                    })
+                    request.session.update(
+                        {
+                            "user_id": user.id,
+                            "username": user.username,
+                        }
+                    )
                     return True
 
             return False
@@ -118,5 +143,7 @@ class AuthBackend(AuthenticationBackend):
 
 app = FastAPI()
 session_factory = resolver.resolve(sessionmaker)
-admin = Admin(app, engine, authentication_backend=AuthBackend(config.secret, session_factory))
+admin = Admin(
+    app, engine, authentication_backend=AuthBackend(config.secret, session_factory)
+)
 admin.add_view(ParticipantAdmin)

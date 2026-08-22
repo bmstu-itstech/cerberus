@@ -7,7 +7,8 @@ from bot.logic.value_objects import (
     ParticipantDetailed,
     ParticipantLink,
     Status,
-    Role, GlobalReport,
+    Role,
+    GlobalReport,
 )
 
 from .models import Participant
@@ -51,9 +52,11 @@ class ParticipantDetailedMapper:
             dietary_restrictions=cast(str | None, participant.dietary_restrictions),
             star=bool(participant.star),
             contacts=cast(str | None, participant.contacts),
+            partners=[link_mapper(p) for p in participant.partners],
             supervisors=[link_mapper(p) for p in participant.supervisors],
             subordinates=[link_mapper(p) for p in participant.subordinates],
         )
+
 
 @final
 @attrs.define(slots=True, frozen=True)

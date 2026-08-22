@@ -7,8 +7,12 @@ from maxapi.filters.command import Command
 from maxapi.types import MessageCreated
 
 from bot.bot import dp
-from bot.logic.usecases import GetGlobalReport, GetInfirmaryReport, \
-    GetUspenReport, GetLeftReport
+from bot.logic.usecases import (
+    GetGlobalReport,
+    GetInfirmaryReport,
+    GetUspenReport,
+    GetLeftReport,
+)
 from .templates import render
 
 

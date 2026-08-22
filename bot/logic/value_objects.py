@@ -113,6 +113,7 @@ class ParticipantDetailed:
     dietary_restrictions: str | None
     star: bool
     contacts: str | None
+    partners: list[ParticipantLink]
     supervisors: list[ParticipantLink]
     subordinates: list[ParticipantLink]
 

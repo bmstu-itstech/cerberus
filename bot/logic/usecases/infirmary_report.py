@@ -14,5 +14,7 @@ class GetInfirmaryReport:
 
     def __call__(self) -> InfirmaryReport:
         return InfirmaryReport(
-            participants=[self._mapper(p) for p in self._repository.infirmary_participants()]
+            participants=[
+                self._mapper(p) for p in self._repository.infirmary_participants()
+            ]
         )

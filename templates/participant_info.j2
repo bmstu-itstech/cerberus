@@ -9,12 +9,16 @@ Telegram: <pre>@{{ p.telegram }}</pre>
 
 🔄 <b>Статус</b>
 {{ p.status.display_name | capitalize }} {{ p.status.emoji }} {% if p.status == "left" %}({{p.left_at}}){% endif %}
-{% if p.team %}<b>{{ p.team }}</b> команда, <b>{{ p.district }}</b> округ{% endif %}
+{% if p.team %}<b>{{ p.team }}</b> команда, <b>{{ p.district }}</b> округ
+{% endif %}
+{% if p.partners %}<b>Напарники:</b>
+{% for partner in p.partners %}<code>{{ "%4d" | format(partner.id) }}</code> {{ partner.full_name }}
+{% endfor %}{% endif %}
 {% if p.supervisors %}<b>Руководители:</b>
 {% for sup in p.supervisors %}<code>{{ "%4d" | format(sup.id) }}</code> {{ sup.full_name }}
 {% endfor %}{% endif %}{% if p.subordinates %}
 <b>Команда:</b>
-{% for  sub in p.subordinates %}<code>{{ "%4d" | format(sub.id) }}</code> {{ sub.full_name }}
+{% for  sub in p.subordinates %}<code>{{ "%4d" | format(sub.id) }}</code> {{ sub.full_name }}{% if sub.team %} (к{{ sub.team }}){% endif %}
 {% endfor %}{% endif %}
 Особенности: {% if p.health_conditions %}🇨🇭{% else %}-{% endif %}/{% if p.dietary_restrictions %}🥗{% else %}-{% endif %}
 
