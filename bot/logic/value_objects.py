@@ -101,8 +101,8 @@ class ParticipantDetailed:
     full_name: str
     group: str | None
     birth_date: date | None
-    phone: str
-    telegram: str
+    phone: str | None
+    telegram: str | None
     vk: str | None
     status: Status
     left_at: datetime | None

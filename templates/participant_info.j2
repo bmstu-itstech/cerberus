@@ -3,8 +3,8 @@
 {% if p.birth_date %}{{ p.birth_date.strftime("%d.%m.%Y") }} ({{ p.age }} лет){% endif %}
 
 📞 <b>Контакты</b>
-<pre>{{ p.phone }}</pre>
-Telegram: <pre>@{{ p.telegram }}</pre>
+{% if p.phone %}<pre>{{ p.phone }}</pre>{% endif %}
+{% if p.telegram %}Telegram: <pre>@{{ p.telegram }}</pre>{% endif %}
 {% if p.vk %}VK: {{ p.vk }}{% endif %}
 
 🔄 <b>Статус</b>
